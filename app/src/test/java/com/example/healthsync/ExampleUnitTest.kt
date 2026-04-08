@@ -1,17 +1,37 @@
 package com.example.healthsync
 
+import com.example.healthsync.data.model.HealthLog
+import org.junit.Assert.*
 import org.junit.Test
 
-import org.junit.Assert.*
+class DashboardViewModelTest {
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
+    fun hasAnomaly(log: HealthLog?): Boolean {
+        if (log == null) return false
+        return log.heartRate !in 50..100
+                || log.sleepHours < 4f
+                || log.steps < 1000
+    }
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun highHeartRateTriggersAnomaly() {
+        val log = HealthLog(heartRate = 110, steps = 5000, sleepHours = 7f)
+        assertTrue(hasAnomaly(log))
+    }
+
+    @Test
+    fun normalVitalsReturnNoAnomaly() {
+        val log = HealthLog(heartRate = 72, steps = 5000, sleepHours = 7f)
+        assertFalse(hasAnomaly(log))
+    }
+
+    @Test
+    fun lowSleepTriggersAnomaly() {
+        val log = HealthLog(heartRate = 72, steps = 5000, sleepHours = 3f)
+        assertTrue(hasAnomaly(log))
+    }
+
+    @Test
+    fun nullLogReturnsNoAnomaly() {
+        assertFalse(hasAnomaly(null))
     }
 }

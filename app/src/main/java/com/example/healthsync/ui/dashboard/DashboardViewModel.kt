@@ -31,6 +31,7 @@ class DashboardViewModel : ViewModel() {
 
     fun loadData() {
         val userId = authRepo.currentUser?.uid
+
         if (userId == null) {
             _errorMessage.value = "User not logged in"
             return
@@ -62,5 +63,12 @@ class DashboardViewModel : ViewModel() {
 
     fun clearError() {
         _errorMessage.value = null
+    }
+
+    fun hasAnomaly(log: HealthLog?): Boolean {
+        if (log == null) return false
+        return log.heartRate !in 50..100
+                || log.sleepHours < 4f
+                || log.steps < 1000
     }
 }
