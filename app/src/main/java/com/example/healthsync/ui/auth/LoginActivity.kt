@@ -1,5 +1,6 @@
 package com.example.healthsync.ui.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.healthsync.MainActivity
 import com.example.healthsync.databinding.ActivityLoginBinding
+import com.example.healthsync.utils.SecurityManager
 import com.example.healthsync.utils.ValidationUtils
 
 class LoginActivity : AppCompatActivity() {
@@ -21,10 +23,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (viewModel.isLoggedIn()) {
-            goToMain()
-            return
+            checkBiometric()
         }
 
+        setupListeners()
+        observeViewModel()
+    }
+
+    private fun setupListeners() {
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
@@ -44,6 +50,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
+        binding.btnBiometricLogin.setOnClickListener {
+            showBiometricPrompt()
+        }
+    }
+
+    private fun observeViewModel() {
         viewModel.authState.observe(this) { state ->
             when (state) {
                 is AuthState.Loading -> binding.progressBar.visibility = View.VISIBLE
@@ -55,6 +67,28 @@ class LoginActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
                 }
+            }
+        }
+    }
+
+    private fun checkBiometric() {
+        val sharedPrefs = getSharedPreferences("healthsync_prefs", Context.MODE_PRIVATE)
+        val isBiometricEnabled = sharedPrefs.getBoolean("biometric_enabled", false)
+        
+        if (isBiometricEnabled) {
+            binding.btnBiometricLogin.visibility = View.VISIBLE
+            showBiometricPrompt()
+        } else {
+            goToMain()
+        }
+    }
+
+    private fun showBiometricPrompt() {
+        SecurityManager.showBiometricPrompt(this) { success ->
+            if (success) {
+                goToMain()
+            } else {
+                Toast.makeText(this, "Biometric authentication failed", Toast.LENGTH_SHORT).show()
             }
         }
     }

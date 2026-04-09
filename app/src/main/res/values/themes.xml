@@ -1,9 +1,54 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <style name="Base.Theme.HealthSync" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryContainer">@color/green_100</item>
+        <item name="colorOnPrimaryContainer">@color/green_600</item>
+        <item name="colorSecondary">@color/green_400</item>
+        <item name="colorSurface">@color/bg_card</item>
+        <item name="android:colorBackground">@color/bg_page</item>
+        <item name="android:windowBackground">@color/bg_page</item>
+        <item name="colorControlActivated">@color/green_500</item>
+        <item name="colorControlHighlight">@color/green_100</item>
+        <item name="bottomNavigationStyle">@style/HealthSync.BottomNav</item>
     </style>
 
     <style name="Theme.HealthSync" parent="Base.Theme.HealthSync" />
+
+    <!-- Base style for HealthSync namespace to prevent linking errors -->
+    <style name="HealthSync" />
+
+    <style name="HealthSync.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardBackgroundColor">@color/bg_card</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="HealthSync.Button.Primary" parent="Widget.Material3.Button">
+        <item name="cornerRadius">16dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">56dp</item> <!-- Larger touch target for one-handed use -->
+    </style>
+
+    <style name="HealthSync.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_color</item>
+        <item name="itemTextColor">@color/bottom_nav_color</item>
+        <item name="android:background">@color/bg_card</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <style name="HealthSync.MetricValue">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="HealthSync.SectionLabel">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

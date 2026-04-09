@@ -12,7 +12,7 @@
         android:title="@string/nav_log"/>
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/profile_nav"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/nav_profile"/>
 

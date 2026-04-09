@@ -10,8 +10,8 @@ import com.example.healthsync.data.model.UserProfile
 @Database(
     entities = [HealthLog::class, UserProfile::class],
     version = 2,
-    exportSchema = false
-)                                          // ← removed @TypeConverters(Converters::class)
+    exportSchema = true
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun healthLogDao(): HealthLogDao
     abstract fun userProfileDao(): UserProfileDao

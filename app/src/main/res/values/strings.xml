@@ -60,4 +60,29 @@
     <string name="no_internet">No internet connection. Showing cached data.</string>
     <string name="loading_data">Loading health data&#8230;</string>
     <string name="load_error">Failed to load health data</string>
+    <string name="biometric_title">Secure Health Access</string>
+    <string name="biometric_subtitle">Authenticate to view your health data</string>
+    <string name="biometric_negative">Cancel</string>
+    <string name="ai_insight_icon">AI Insight Icon</string>
+    <string name="btn_generate_report">Generate Weekly Report</string>
+    <string name="report_generated">Report saved to downloads folder</string>
+    <string name="label_security">Security</string>
+    <string name="label_biometric">Biometric Authentication</string>
+    <string name="biometric_login_desc">Biometric Login</string>
+    <string name="report_viewer_title">Weekly Health Report</string>
+    <string name="report_ready_msg">Your report has been generated successfully!</string>
+    <string name="report_location">Location: %1$s</string>
+    <string name="report_download_msg">A permanent copy has been saved to your Downloads folder.</string>
+    <string name="report_return_msg">Tap back to return to Profile.</string>
+    <string name="report_error_msg">Error: Report file not found.</string>
+
+    <string name="ai_health_analysis">AI Health Analysis</string>
+    <string name="ai_live_badge">✨ Live</string>
+    <string name="ai_analyzing">Analyzing your latest metrics...</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="change_username">Change Username</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="profile_updated">Profile updated</string>
+    <string name="update_failed">Update failed: %1$s</string>
 </resources>

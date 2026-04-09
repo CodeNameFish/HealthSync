@@ -2,4 +2,32 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="green_50">#EEF7ED</color>
+    <color name="green_100">#C8E6C5</color>
+    <color name="green_200">#A5D6A7</color>
+    <color name="green_400">#4CAF50</color>
+    <color name="green_500">#2E7D32</color>
+    <color name="green_600">#1B5E20</color>
+
+    <color name="red_400">#EF5350</color>
+    <color name="red_100">#FFCDD2</color>
+    <color name="amber_400">#FFA726</color>
+    <color name="amber_50">#FFF8E1</color>
+    <color name="amber_100">#FFE0B2</color>
+    <color name="blue_400">#42A5F5</color>
+    <color name="blue_50">#E3F2FD</color>
+
+    <color name="bg_page">#F4F6F3</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_card_alt">#F9FBF9</color>
+
+    <color name="text_primary">#1A1F1A</color>
+    <color name="text_secondary">#5C6860</color>
+    <color name="text_hint">#9AADA4</color>
+
+    <color name="anomaly_bg">#FFF3E0</color>
+    <color name="anomaly_border">#FFE0B2</color>
+    <color name="anomaly_text">#E65100</color>
+    <color name="anomaly_dot">#FF9800</color>
 </resources>

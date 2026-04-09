@@ -14,9 +14,27 @@
         android:name="com.example.healthsync.ui.log.LogFragment"
         android:label="Log Health"/>
 
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.healthsync.ui.profile.ProfileFragment"
-        android:label="Profile"/>
+    <navigation
+        android:id="@+id/profile_nav"
+        app:startDestination="@id/profileFragment">
+
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.example.healthsync.ui.profile.ProfileFragment"
+            android:label="Profile">
+            <action
+                android:id="@+id/action_profileFragment_to_reportViewerFragment"
+                app:destination="@id/reportViewerFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/reportViewerFragment"
+            android:name="com.example.healthsync.ui.profile.ReportViewerFragment"
+            android:label="Weekly Health Report">
+            <argument
+                android:name="filePath"
+                app:argType="string" />
+        </fragment>
+    </navigation>
 
 </navigation>

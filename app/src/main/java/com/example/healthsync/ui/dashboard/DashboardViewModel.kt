@@ -1,18 +1,23 @@
 package com.example.healthsync.ui.dashboard
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.healthsync.data.model.HealthLog
 import com.example.healthsync.data.remote.AuthRepository
 import com.example.healthsync.data.remote.HealthLogRepository
+import com.example.healthsync.data.remote.UserRepository
+import com.example.healthsync.utils.HealthAIProcessor
 import kotlinx.coroutines.launch
 
-class DashboardViewModel : ViewModel() {
+class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 
     private val authRepo = AuthRepository()
     private val healthRepo = HealthLogRepository()
+    private val userRepo = UserRepository()
+    private val aiProcessor = HealthAIProcessor(application)
 
     private val _todayLog = MutableLiveData<HealthLog?>()
     val todayLog: LiveData<HealthLog?> = _todayLog
@@ -29,6 +34,9 @@ class DashboardViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    private val _aiInsight = MutableLiveData<String?>()
+    val aiInsight: LiveData<String?> = _aiInsight
+
     fun loadData() {
         val userId = authRepo.currentUser?.uid
 
@@ -38,10 +46,17 @@ class DashboardViewModel : ViewModel() {
         }
 
         _isLoading.value = true
-        _userName.value = authRepo.currentUser?.email ?: "User"
-
+        
         viewModelScope.launch {
             try {
+                // Load User Name from Profile instead of Email
+                val userResult = userRepo.getProfile(userId)
+                if (userResult.isSuccess) {
+                    _userName.value = userResult.getOrNull()?.name ?: "User"
+                } else {
+                    _userName.value = authRepo.currentUser?.email?.substringBefore("@") ?: "User"
+                }
+
                 val result = healthRepo.getLogs(userId)
                 if (result.isSuccess) {
                     val allLogs = result.getOrNull() ?: emptyList()
@@ -49,7 +64,19 @@ class DashboardViewModel : ViewModel() {
                     val todayEntry = allLogs.find { it.date == today }
                     _todayLog.value = todayEntry
                     val last7Days = allLogs.sortedByDescending { it.timestamp }.take(7)
-                    _weeklyLogs.value = last7Days.reversed()
+                    val logs = last7Days.reversed()
+                    _weeklyLogs.value = logs
+
+                    // Generate AI Insight
+                    todayEntry?.let { log ->
+                        val input = floatArrayOf(
+                            log.heartRate.toFloat(),
+                            log.sleepHours,
+                            log.steps.toFloat(),
+                            log.waterIntake
+                        )
+                        _aiInsight.value = aiProcessor.analyzeTrend(input)
+                    }
                 } else {
                     _errorMessage.value = "Failed to load health data"
                 }
@@ -59,6 +86,11 @@ class DashboardViewModel : ViewModel() {
                 _isLoading.value = false
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        aiProcessor.close()
     }
 
     fun clearError() {

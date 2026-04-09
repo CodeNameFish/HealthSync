@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -36,6 +37,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    androidResources {
+        noCompress += "tflite"
+    }
 }
 
 kotlin {
@@ -64,6 +69,9 @@ dependencies {
     implementation(libs.coroutines.play.services)
     implementation(libs.glide)
     implementation(libs.mpandroidchart)
+    implementation(libs.androidx.biometric)
+    implementation(libs.tensorflow.lite)
+    implementation(libs.androidx.health.connect)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -32,20 +32,29 @@ class AuthViewModel : ViewModel() {
     fun register(email: String, password: String, name: String, age: Int, weight: Float) {
         _authState.value = AuthState.Loading
         viewModelScope.launch {
-            val result = authRepo.register(email, password)
-            if (result.isSuccess) {
-                val user = result.getOrNull()!!
-                val profile = UserProfile(
-                    uid = user.uid,
-                    name = name,
-                    email = email,
-                    age = age,
-                    weight = weight
-                )
-                userRepo.saveProfile(profile)
-                _authState.value = AuthState.Success
-            } else {
-                _authState.value = AuthState.Error(result.exceptionOrNull()?.message ?: "Registration failed")
+            try {
+                val result = authRepo.register(email, password)
+                if (result.isSuccess) {
+                    val firebaseUser = result.getOrNull()!!
+                    val profile = UserProfile(
+                        uid = firebaseUser.uid,
+                        name = name,
+                        email = email,
+                        age = age,
+                        weight = weight
+                    )
+                    // Ensure the profile is successfully saved before concluding registration
+                    val saveResult = userRepo.saveProfile(profile)
+                    if (saveResult.isSuccess) {
+                        _authState.value = AuthState.Success
+                    } else {
+                        _authState.value = AuthState.Error("Account created, but failed to save health profile: ${saveResult.exceptionOrNull()?.message}")
+                    }
+                } else {
+                    _authState.value = AuthState.Error(result.exceptionOrNull()?.message ?: "Registration failed")
+                }
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error(e.message ?: "An unexpected error occurred")
             }
         }
     }

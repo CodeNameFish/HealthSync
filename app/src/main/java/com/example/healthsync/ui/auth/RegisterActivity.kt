@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.healthsync.MainActivity
 import com.example.healthsync.databinding.ActivityRegisterBinding
 import com.example.healthsync.utils.ValidationUtils
 
@@ -46,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
             viewModel.register(email, password, name, age, weight)
         }
 
-        binding.tvLogin.setOnClickListener {
+        binding.tvLoginLink.setOnClickListener {
             finish()
         }
 
@@ -55,7 +56,12 @@ class RegisterActivity : AppCompatActivity() {
                 is AuthState.Loading -> binding.progressBar.visibility = View.VISIBLE
                 is AuthState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+                    
+                    // Navigate straight to MainActivity (Home)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
                     finish()
                 }
                 is AuthState.Error -> {
