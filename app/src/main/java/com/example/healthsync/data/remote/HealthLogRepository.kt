@@ -8,7 +8,7 @@ import kotlinx.coroutines.tasks.await
 
 class HealthLogRepository {
 
-    private val db: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val db: DatabaseReference = FirebaseDatabase.getInstance("https://healthsync-b1894-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
     suspend fun saveLog(log: HealthLog): Result<Unit> {
         return try {

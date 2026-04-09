@@ -8,7 +8,7 @@ import kotlinx.coroutines.tasks.await
 
 class UserRepository {
 
-    private val db: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val db: DatabaseReference = FirebaseDatabase.getInstance("https://healthsync-b1894-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
     suspend fun saveProfile(profile: UserProfile): Result<Unit> {
         return try {
